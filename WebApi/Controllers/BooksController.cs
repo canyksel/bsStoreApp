@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Entities.Modals;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Modals;
-using WebApi.Repositories;
+using Repositories.EFCore;
 
 namespace WebApi.Controllers
 {
