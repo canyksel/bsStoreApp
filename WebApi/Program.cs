@@ -1,6 +1,9 @@
+using NLog;
 using WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 // Add services to the container.
 
@@ -14,6 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureSqlSContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
+builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
 
