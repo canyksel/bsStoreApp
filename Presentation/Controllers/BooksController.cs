@@ -1,4 +1,5 @@
-﻿using Entities.Modals;
+﻿using Entities.DTOs;
+using Entities.Modals;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -48,12 +49,12 @@ public class BooksController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult UpdateBook([FromRoute(Name = "id")] int id, [FromBody] Book book)
+    public IActionResult UpdateBook([FromRoute(Name = "id")] int id, [FromBody] BookDtoForUpdate bookDto)
     {
 
-        if (book is null) return BadRequest(); //400
+        if (bookDto is null) return BadRequest(); //400
 
-        _manager.BookService.UpdateOneBook(id, book, true);
+        _manager.BookService.UpdateOneBook(id, bookDto, true);
 
         return NoContent();
     }
@@ -75,7 +76,7 @@ public class BooksController : ControllerBase
             .GetOneBookById(id, true);
 
         book.ApplyTo(entity);
-        _manager.BookService.UpdateOneBook(id, entity, true);
+        _manager.BookService.UpdateOneBook(id, new BookDtoForUpdate(entity.Id, entity.Title, entity.Price), true);
 
         return NoContent(); // 204
     }
