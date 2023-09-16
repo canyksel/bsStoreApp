@@ -2,7 +2,6 @@
 using Entities.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using Services.Contracts;
-using System.Net;
 
 namespace WebApi.Extensions
 {

@@ -36,7 +36,7 @@ namespace WebApi.Utilities.Formatters
 
             if (context.Object is IEnumerable<BookDto>)
             {
-                foreach(var book in (IEnumerable<BookDto>)context.Object)
+                foreach (var book in (IEnumerable<BookDto>)context.Object)
                 {
                     FormatCsv(buffer, book);
                 }

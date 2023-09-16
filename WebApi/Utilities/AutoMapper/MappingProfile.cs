@@ -10,5 +10,6 @@ public class MappingProfile : Profile
     {
         CreateMap<BookDtoForUpdate, Book>();
         CreateMap<Book, BookDto>();
+        CreateMap<BookDtoForInsertion, Book>();
     }
 }

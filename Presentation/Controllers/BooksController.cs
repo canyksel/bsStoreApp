@@ -1,5 +1,4 @@
 ﻿using Entities.DTOs;
-using Entities.Modals;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -38,14 +37,17 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateBook([FromBody] Book book)
+    public IActionResult CreateBook([FromBody] BookDtoForInsertion bookDto)
     {
 
-        if (book is null) return BadRequest();
+        if (bookDto is null) return BadRequest(); // 400
 
-        _manager.BookService.CreateOneBook(book);
+        if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
 
-        return StatusCode(201, book);
+
+        var book = _manager.BookService.CreateOneBook(bookDto);
+
+        return StatusCode(201, book); // CreatedAtRoute()
     }
 
     [HttpPut]
@@ -67,16 +69,16 @@ public class BooksController : ControllerBase
     }
 
     [HttpPatch("{id:int}")]
-    public IActionResult PartiallyUpdateBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<Book> book)
+    public IActionResult PartiallyUpdateBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<BookDto> bookPatch)
     {
 
         // check entity
-        var entity = _manager
+        var bookDto = _manager
             .BookService
             .GetOneBookById(id, true);
 
-        book.ApplyTo(entity);
-        _manager.BookService.UpdateOneBook(id, new BookDtoForUpdate(entity.Id, entity.Title, entity.Price), true);
+        bookPatch.ApplyTo(bookDto);
+        _manager.BookService.UpdateOneBook(id, new BookDtoForUpdate() { Id = bookDto.Id, Title = bookDto.Title, Price = bookDto.Price }, true);
 
         return NoContent(); // 204
     }
