@@ -1,6 +1,5 @@
 ﻿namespace Entities.DTOs;
 
-[Serializable]
 public record BookDto
 {
     public int Id { get; init; }

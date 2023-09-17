@@ -27,7 +27,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public IActionResult GetBook([FromRoute(Name = "id")] int id)
+    public IActionResult GetOneBook([FromRoute(Name = "id")] int id)
     {
         var book = _manager
             .BookService
@@ -37,26 +37,27 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult CreateBook([FromBody] BookDtoForInsertion bookDto)
+    public IActionResult CreateOneBook([FromBody] BookDtoForInsertion bookDto)
     {
 
         if (bookDto is null) return BadRequest(); // 400
 
         if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
 
-
         var book = _manager.BookService.CreateOneBook(bookDto);
 
         return StatusCode(201, book); // CreatedAtRoute()
     }
 
-    [HttpPut]
-    public IActionResult UpdateBook([FromRoute(Name = "id")] int id, [FromBody] BookDtoForUpdate bookDto)
+    [HttpPut ("{id:int}")]
+    public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] BookDtoForUpdate bookDto)
     {
 
         if (bookDto is null) return BadRequest(); //400
 
-        _manager.BookService.UpdateOneBook(id, bookDto, true);
+        if(!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
+        _manager.BookService.UpdateOneBook(id, bookDto, false);
 
         return NoContent();
     }
@@ -69,16 +70,20 @@ public class BooksController : ControllerBase
     }
 
     [HttpPatch("{id:int}")]
-    public IActionResult PartiallyUpdateBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<BookDto> bookPatch)
+    public IActionResult PartiallyUpdateBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<BookDtoForUpdate> bookPatch)
     {
 
-        // check entity
-        var bookDto = _manager
-            .BookService
-            .GetOneBookById(id, true);
+        if(bookPatch is null) return BadRequest();
 
-        bookPatch.ApplyTo(bookDto);
-        _manager.BookService.UpdateOneBook(id, new BookDtoForUpdate() { Id = bookDto.Id, Title = bookDto.Title, Price = bookDto.Price }, true);
+        var result = _manager.BookService.GetOneBookForPatch(id, false);
+
+        bookPatch.ApplyTo(result.bookDtoForUpdate, ModelState);
+
+        TryValidateModel(result.bookDtoForUpdate);
+
+        if(!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
+        _manager.BookService.SaveChangesForPatch(result.bookDtoForUpdate, result.book);
 
         return NoContent(); // 204
     }
