@@ -1,4 +1,4 @@
-﻿namespace Entities.Modals;
+﻿namespace Entities.Models;
 
 public class Book
 {

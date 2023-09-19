@@ -1,5 +1,5 @@
 ﻿using Entities.DTOs;
-using Entities.Modals;
+using Entities.Models;
 
 namespace Services.Contracts;
 

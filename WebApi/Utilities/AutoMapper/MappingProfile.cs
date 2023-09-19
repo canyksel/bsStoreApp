@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Entities.DTOs;
-using Entities.Modals;
+using Entities.Models;
 
 namespace WebApi.Utilities.AutoMapper;
 
