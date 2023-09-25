@@ -1,6 +1,6 @@
 ﻿namespace Entities.RequestFeatures;
 
-public class BookParameters: RequestParamaters
+public class BookParameters : RequestParamaters
 {
 
 }

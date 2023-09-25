@@ -14,7 +14,7 @@ public class ValidationFilterAttribute : ActionFilterAttribute
         var param = context.ActionArguments
             .SingleOrDefault(p => p.Value.ToString().Contains("Dto")).Value;
 
-        if(param is null)
+        if (param is null)
         {
             context.Result = new BadRequestObjectResult($"Object is null. " +
                 $"Controller: {controller} " +

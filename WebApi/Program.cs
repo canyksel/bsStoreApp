@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using NLog;
-using Presentation.ActionFilters;
 using Services.Contracts;
 using WebApi.Extensions;
 

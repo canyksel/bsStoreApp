@@ -40,7 +40,7 @@ public static class ServicesExtensions
     {
         services.AddCors(options =>
         {
-            options.AddPolicy("CorsPolicy", builder => 
+            options.AddPolicy("CorsPolicy", builder =>
             builder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader()

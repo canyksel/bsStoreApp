@@ -43,7 +43,7 @@ namespace Services
         {
             var booksWithMetaData = await _manager.Book.GetAllBooksAsync(bookParameters, trackChanges);
 
-             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
+            var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
 
             return (booksDto, booksWithMetaData.MetaData);
         }
