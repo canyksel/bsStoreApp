@@ -2,6 +2,7 @@
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
+using Repositories.EFCore.Extensions;
 
 namespace Repositories.EFCore;
 
@@ -17,7 +18,8 @@ public sealed class BookRepository : RepositoryBase<Book>, IBookRepository
     {
         var books = await FindAll(trackChanges)
            .FilterBooks(bookParameters.MinPrice, bookParameters.MaxPrice)
-           .OrderBy(b => b.Id)
+           .Search(bookParameters.SearchTerm)
+           .Sort(bookParameters.OrderBy)
            .ToListAsync();
 
         return PagedList<Book>.ToPagedList(books, bookParameters.PageNumber, bookParameters.PageSize);
