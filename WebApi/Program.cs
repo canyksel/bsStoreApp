@@ -14,8 +14,8 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
 })
-//.AddCustomCsvFormatter()
-//.AddXmlDataContractSerializerFormatters()
+.AddCustomCsvFormatter()
+.AddXmlDataContractSerializerFormatters()
 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
 .AddNewtonsoftJson();
 
@@ -35,6 +35,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureActionFilters();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
+builder.Services.AddCustomMediaTypes();
 
 var app = builder.Build();
 

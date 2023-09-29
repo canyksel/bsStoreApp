@@ -1,4 +1,6 @@
 ﻿using Entities.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Presentation.ActionFilters;
 using Repositories.Contracts;
@@ -53,5 +55,28 @@ public static class ServicesExtensions
     public static void ConfigureDataShaper(this IServiceCollection services)
     {
         services.AddScoped<IDataShaper<BookDto>, DataShaper<BookDto>>();
+    }
+
+    public static void AddCustomMediaTypes(this IServiceCollection services)
+    {
+        services.Configure<MvcOptions>(config =>
+        {
+            var systemTextJsonOutputFormatter = config.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+
+            if (systemTextJsonOutputFormatter is not null)
+            {
+                systemTextJsonOutputFormatter.SupportedMediaTypes
+                .Add("application/vnd.btkakademi.hateoas+json");
+            }
+
+            var xlmOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+
+            if (xlmOutputFormatter is not null)
+            {
+                xlmOutputFormatter.SupportedMediaTypes
+                .Add("application/vnd.btkakademi.hateoas+xml");
+            }
+
+        });
     }
 }
