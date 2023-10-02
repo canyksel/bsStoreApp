@@ -21,6 +21,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpGet]
+    [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
     {
         var pagedResult = await _manager
