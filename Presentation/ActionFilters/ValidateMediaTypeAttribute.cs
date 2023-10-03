@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.ActionFilters;
 
@@ -26,9 +21,9 @@ public class ValidateMediaTypeAttribute : ActionFilterAttribute
             .Request.Headers["Accept"]
             .FirstOrDefault();
 
-        if(MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue? outMediaType))
+        if (MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue? outMediaType))
         {
-            context.Result = new BadRequestObjectResult($"Media type not present. "+$"Please add Accept header with required media type.");
+            context.Result = new BadRequestObjectResult($"Media type not present. " + $"Please add Accept header with required media type.");
             return;
         }
 
