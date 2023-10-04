@@ -6,24 +6,30 @@ namespace Presentation.ActionFilters;
 
 public class ValidateMediaTypeAttribute : ActionFilterAttribute
 {
-    public override void OnActionExecuted(ActionExecutedContext context)
+    public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var accpetHeaderPresent = context.HttpContext
-            .Request.Headers.ContainsKey("Accept");
+        var acceptHeaderPresent = context.HttpContext
+               .Request
+               .Headers
+               .ContainsKey("Accept");
 
-        if (!accpetHeaderPresent)
+        if (!acceptHeaderPresent)
         {
-            context.Result = new BadRequestObjectResult($"Accept header is missing!");
+            context.Result =
+                new BadRequestObjectResult($"Accept header is missing!");
             return;
         }
 
         var mediaType = context.HttpContext
-            .Request.Headers["Accept"]
+            .Request
+            .Headers["Accept"]
             .FirstOrDefault();
 
-        if (MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue? outMediaType))
+        if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue? outMediaType))
         {
-            context.Result = new BadRequestObjectResult($"Media type not present. " + $"Please add Accept header with required media type.");
+            context.Result =
+                new BadRequestObjectResult($"Media type not present. " +
+                $"Please add Accept header with required media type.");
             return;
         }
 
