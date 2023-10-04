@@ -1,7 +1,6 @@
 ﻿using Entities.DTOs;
 using Entities.LinkModels;
 using Entities.Models;
-using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Net.Http.Headers;

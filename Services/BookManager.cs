@@ -6,7 +6,6 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Services.Contracts;
-using System.Dynamic;
 
 namespace Services
 {
@@ -50,8 +49,8 @@ namespace Services
             var booksWithMetaData = await _manager.Book.GetAllBooksAsync(linkParameters.BookParameters, trackChanges);
 
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
-            var links = _bookLinks.TryGenerateLinks(booksDto, 
-                linkParameters.BookParameters.Fields, 
+            var links = _bookLinks.TryGenerateLinks(booksDto,
+                linkParameters.BookParameters.Fields,
                 linkParameters.HttpContext);
 
             return (linkResponse: links, metaData: booksWithMetaData.MetaData);

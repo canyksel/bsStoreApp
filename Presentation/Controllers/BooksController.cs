@@ -1,17 +1,10 @@
 ﻿using Entities.DTOs;
-using Entities.Exceptions;
-using Entities.Models;
 using Entities.RequestFeatures;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers;
 
@@ -72,7 +65,7 @@ public class BooksController : ControllerBase
         [FromBody] BookDtoForUpdate bookDto)
     {
         await _manager.BookService.UpdateOneBookAsync(id, bookDto, false);
-        
+
         return NoContent();
     }
 
