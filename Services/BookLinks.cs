@@ -54,7 +54,7 @@ public class BookLinks : IBookLinks
         bookCollectionWrapper.Links.Add(new Link()
         {
             Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}",
-            Rel = "self",
+            Rel = "_self",
             Method = "GET"
         });
         return bookCollectionWrapper;
@@ -71,7 +71,7 @@ public class BookLinks : IBookLinks
            {
                Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}" +
                $"/{bookDto.Id}",
-               Rel = "self",
+               Rel = "_self",
                Method = "GET"
            },
            new Link()
