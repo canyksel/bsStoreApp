@@ -1,8 +1,10 @@
 ﻿using Entities.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Presentation.ActionFilters;
+using Presentation.Controllers;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services;
@@ -84,6 +86,23 @@ public static class ServicesExtensions
                 .Add("application/vnd.btkakademi.apiroot+xml");
             }
 
+        });
+    }
+
+    public static void ConfigureVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(opt =>
+        {
+            opt.ReportApiVersions = true;
+            opt.AssumeDefaultVersionWhenUnspecified = true;
+            opt.DefaultApiVersion = new ApiVersion(1, 0);
+            opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+
+            opt.Conventions.Controller<BooksController>()
+                .HasApiVersion(new ApiVersion(1, 0));
+
+            opt.Conventions.Controller<BooksV2Controller>()
+                .HasDeprecatedApiVersion(new ApiVersion(2, 0));
         });
     }
 }
