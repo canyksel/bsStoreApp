@@ -15,15 +15,15 @@ public class BooksV2Controller : ControllerBase
         _manager = manager;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllBooksAsync()
-    {
-        var books = await _manager.BookService.GetAllBooksAsync(false);
-        var booksV2 = books.Select(b => new
-        {
-            Title = b.Title,
-            Id = b.Id,
-        });
-        return Ok(booksV2);
-    }
+    //[HttpGet]
+    //public async Task<IActionResult> GetAllBooksAsync()
+    //{
+    //    var books = await _manager.BookService.GetAllBooksAsync(false);
+    //    var booksV2 = books.Select(b => new
+    //    {
+    //        Title = b.Title,
+    //        Id = b.Id,
+    //    });
+    //    return Ok(booksV2);
+    //}
 }
