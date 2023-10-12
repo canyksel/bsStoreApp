@@ -1,4 +1,5 @@
 ﻿using Entities.DTOs;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -106,8 +107,15 @@ public static class ServicesExtensions
         });
     }
 
-    public static void ConfigureResponseCaching(this IServiceCollection services)
+    public static void ConfigureResponseCaching(this IServiceCollection services) => services.AddResponseCaching();
+
+    public static void ConfigureHttpCacheHeaders(this IServiceCollection services) => services.AddHttpCacheHeaders(expirationOpt =>
     {
-        services.AddResponseCaching();
-    }
+        expirationOpt.MaxAge = 90;
+        expirationOpt.CacheLocation = CacheLocation.Public;
+    },
+    validationOpt =>
+    {
+        validationOpt.MustRevalidate = false;
+    });
 }
