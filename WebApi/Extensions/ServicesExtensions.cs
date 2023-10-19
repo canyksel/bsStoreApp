@@ -130,7 +130,7 @@ public static class ServicesExtensions
     {
         var rateLimitRules = new List<RateLimitRule>()
         {
-            new RateLimitRule(){Endpoint ="*", Limit=30, Period="1m"}
+            new RateLimitRule(){Endpoint ="*", Limit=60, Period="1m"}
         };
 
         services.Configure<IpRateLimitOptions>(opt =>
