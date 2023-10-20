@@ -2,7 +2,6 @@
 using Entities.DTOs;
 using Entities.Models;
 using Marvin.Cache.Headers;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

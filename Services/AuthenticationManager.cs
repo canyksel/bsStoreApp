@@ -5,13 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Services.Contracts;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services;
 
@@ -60,7 +56,7 @@ public class AuthenticationManager : IAuthenticationService
         _user = await _userManager.FindByNameAsync(userForAuthenticationDto.UserName);
 
         var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthenticationDto.Password));
-        if(!result)
+        if (!result)
         {
             _logger.LogWarning($"{nameof(ValidateUser)} : Authentication failed. Wrong username or password.");
         }
@@ -97,7 +93,7 @@ public class AuthenticationManager : IAuthenticationService
     {
         var jwtSettings = _configuration.GetSection("JwtSettings");
 
-        var tokenOptions = new JwtSecurityToken(issuer: jwtSettings["validIssuer"], audience: jwtSettings["validAudience"], claims: claims, expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["expires"])),signingCredentials: signinCredentials);
+        var tokenOptions = new JwtSecurityToken(issuer: jwtSettings["validIssuer"], audience: jwtSettings["validAudience"], claims: claims, expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["expires"])), signingCredentials: signinCredentials);
 
         return tokenOptions;
     }

@@ -2,11 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers;
 
@@ -29,9 +24,9 @@ public class AuthenticationController : ControllerBase
             .AuthenticationService
             .RegisterUser(userForRegistrationDto);
 
-        if(!result.Succeeded)
+        if (!result.Succeeded)
         {
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
             {
                 ModelState.TryAddModelError(error.Code, error.Description);
             }
@@ -44,7 +39,7 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost("login")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> Authenticate([FromBody]UserForAuthenticationDto user)
+    public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
     {
         if (!await _service.AuthenticationService.ValidateUser(user))
             return Unauthorized(); // 401
