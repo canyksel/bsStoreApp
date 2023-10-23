@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Services.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Services;
@@ -31,7 +32,7 @@ public class AuthenticationManager : IAuthenticationService
         _configuration = configuration;
     }
 
-    public async Task<string> CreateToken()
+    public async Task<TokenDto> CreateToken()
     {
         var signinCredentials = GetSigninCredential();
         var claims = await GetClaims();
@@ -96,5 +97,41 @@ public class AuthenticationManager : IAuthenticationService
         var tokenOptions = new JwtSecurityToken(issuer: jwtSettings["validIssuer"], audience: jwtSettings["validAudience"], claims: claims, expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["expires"])), signingCredentials: signinCredentials);
 
         return tokenOptions;
+    }
+
+    private string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[32];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+    }
+
+    private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+    {
+        var jwtSettings = _configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["secretKey"];
+
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["validIssuer"],
+            ValidAudience = jwtSettings["validAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+        };
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        SecurityToken securityToken;
+
+        var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+
+        var jwtSecurityToken =  securityToken as JwtSecurityToken;
+
+        return principal;
     }
 }
