@@ -130,7 +130,7 @@ public class AuthenticationManager : IAuthenticationService
 
         var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
 
-        var jwtSecurityToken =  securityToken as JwtSecurityToken;
+        var jwtSecurityToken = securityToken as JwtSecurityToken;
 
         return principal;
     }
