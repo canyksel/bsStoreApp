@@ -15,6 +15,7 @@ namespace Presentation.Controllers;
 [Route("api/books")]
 //[ResponseCache(CacheProfileName ="5mins")]
 //[HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 80)]
+[ApiExplorerSettings(GroupName = "v1")]
 public class BooksController : ControllerBase
 {
     private readonly IServiceManager _manager;
@@ -23,7 +24,7 @@ public class BooksController : ControllerBase
         _manager = manager;
     }
 
-    [Authorize(Roles = "User, Editor, Admin")]
+    [Authorize]
     [HttpHead]
     [HttpGet(Name = "GetAllBooksAsync")]
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
@@ -48,7 +49,7 @@ public class BooksController : ControllerBase
             Ok(result.linkResponse.ShapedEntities);
     }
 
-    [Authorize(Roles = "User, Editor, Admin")]
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetOneBookAsync([FromRoute(Name = "id")] int id)
     {
@@ -59,7 +60,7 @@ public class BooksController : ControllerBase
         return Ok(book);
     }
 
-    [Authorize(Roles = "Editor, Admin")]
+    [Authorize]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [HttpPost(Name = "CreateOneBookAsync")]
     public async Task<IActionResult> CreateOneBookAsync([FromBody] BookDtoForInsertion bookDto)
