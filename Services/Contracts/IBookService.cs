@@ -16,4 +16,5 @@ public interface IBookService
 
     Task SaveChangesForPatchAsync(BookDtoForUpdate bookDtoForUpdate, Book book);
     Task<List<Book>> GetAllBooksAsync(bool trackChanges);
+    Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges);
 }
