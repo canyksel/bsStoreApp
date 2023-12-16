@@ -29,3 +29,4 @@
 27. API Dokümantasyonu (API Documentation)
 28. Bonus
 
+>Kurs bitirme tarihi: 17.12.2023
