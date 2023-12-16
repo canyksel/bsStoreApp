@@ -18,7 +18,9 @@ builder.Services.AddControllers(config =>
 .AddXmlDataContractSerializerFormatters()
 .AddCustomCsvFormatter()
 .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-// .AddNewtonsoftJson()
+//.AddNewtonsoftJson(opt =>
+//    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+//);
 
 
 
@@ -48,6 +50,8 @@ builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.RegisterRepositories();
+builder.Services.RegisterServices();
 
 var app = builder.Build();
 
