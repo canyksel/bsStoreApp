@@ -12,4 +12,7 @@ public abstract record BookDtoForManipulation
     [Required(ErrorMessage = "Price is a required field.")]
     [Range(10, 1000)]
     public decimal Price { get; init; }
+
+    [Required(ErrorMessage = "CategoryId is a required field.")]
+    public int CategoryId { get; init; }
 }

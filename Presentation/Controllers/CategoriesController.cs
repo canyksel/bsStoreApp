@@ -1,4 +1,5 @@
-﻿using Entities.Exceptions;
+﻿using Entities.DTOs;
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
@@ -8,17 +9,17 @@ namespace Presentation.Controllers;
 [Route("api/categories")]
 public class CategoriesController : ControllerBase
 {
-    private readonly IServiceManager _services;
+    private readonly IServiceManager _manager;
 
-    public CategoriesController(IServiceManager services)
+    public CategoriesController(IServiceManager manager)
     {
-        _services = services;
+        _manager = manager;
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAllCategoriesAsync()
     {
-        return Ok(await _services
+        return Ok(await _manager
             .CategoryService
             .GetAllCategoriesAsync(false));
     }
@@ -26,12 +27,20 @@ public class CategoriesController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetCategoryByIdAsync([FromRoute] int id)
     {
-        var category = await _services
+        var category = await _manager
              .CategoryService
              .GetOneCategoryByIdAsync(id, false);
 
         if (category is null) throw new CategoryNotFoundException(id);
 
         return Ok(category);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateOneBookAsync([FromBody] CategoryDto categoryDto)
+    {
+        var category = await _manager.CategoryService.CreateOneCategoryAsync(categoryDto);
+
+        return StatusCode(201, category);
     }
 }

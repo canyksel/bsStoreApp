@@ -1,4 +1,6 @@
-﻿using Entities.Models;
+﻿using AutoMapper;
+using Entities.DTOs;
+using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
 
@@ -7,10 +9,22 @@ namespace Services;
 public class CategoryManager : ICategoryService
 {
     private readonly IRepositoryManager _manager;
+    private readonly IMapper _mapper;
 
-    public CategoryManager(IRepositoryManager manager)
+    public CategoryManager(IRepositoryManager manager, IMapper mapper)
     {
         _manager = manager;
+        _mapper = mapper;
+    }
+
+    public async Task<Category> CreateOneCategoryAsync(CategoryDto categoryDto)
+    {
+        var entity = _mapper.Map<Category>(categoryDto);
+
+        _manager.Category.CreateOneCategory(entity);
+        await _manager.SaveAsync();
+
+        return _mapper.Map<Category>(entity);
     }
 
     public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)

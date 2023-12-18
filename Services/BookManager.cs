@@ -95,6 +95,7 @@ namespace Services
 
         public async Task UpdateOneBookAsync(int id, BookDtoForUpdate bookDto, bool trackChanges)
         {
+            var category = await _manager.Category.GetOneCategoryByIdAsync(bookDto.CategoryId, false);
             //check entity
             var entity = await GetOneBookByIdAndCheckExists(id, trackChanges);
 
