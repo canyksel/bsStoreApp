@@ -27,6 +27,14 @@ public class CategoryManager : ICategoryService
         return _mapper.Map<Category>(entity);
     }
 
+    public async Task DeleteOneCategoryAsync(int id, bool trackChanges)
+    {
+        var entity = await GetOneCategoryByIdAsync(id, trackChanges);
+        
+        _manager.Category.DeleteOneCategory(entity);
+        await _manager.SaveAsync();
+    }
+
     public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)
     {
         return await _manager
@@ -39,5 +47,10 @@ public class CategoryManager : ICategoryService
         return await _manager
              .Category
              .GetOneCategoryByIdAsync(id, trackChanges);
+    }
+
+    public Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDto, bool trackChanges)
+    {
+        throw new NotImplementedException();
     }
 }

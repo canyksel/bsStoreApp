@@ -11,11 +11,11 @@ public class FilesController : ControllerBase
     [HttpPost("upload")]
     public async Task<IActionResult> Upload(IFormFile file)
     {
-        if(!ModelState.IsValid) return BadRequest();
+        if (!ModelState.IsValid) return BadRequest();
 
         // folder
         var folder = Path.Combine(Directory.GetCurrentDirectory(), "Media");
-        if(!Directory.Exists(folder))
+        if (!Directory.Exists(folder))
             Directory.CreateDirectory(folder);
 
         // path
@@ -44,7 +44,7 @@ public class FilesController : ControllerBase
 
         // ContentType : (MIME)
         var provider = new FileExtensionContentTypeProvider();
-        if(!provider.TryGetContentType(fileName, out var contentType)) 
+        if (!provider.TryGetContentType(fileName, out var contentType))
         {
             contentType = "application/octet-stream";
         }
