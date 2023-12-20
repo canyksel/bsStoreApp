@@ -1,4 +1,4 @@
-﻿namespace Entities.Exceptions;
+﻿namespace Entities.Exceptions.Base;
 
 public abstract partial class NotFoundException : Exception
 {

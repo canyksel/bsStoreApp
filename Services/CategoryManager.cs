@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.DTOs;
+using Entities.Exceptions.Category;
 using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -17,19 +18,19 @@ public class CategoryManager : ICategoryService
         _mapper = mapper;
     }
 
-    public async Task<Category> CreateOneCategoryAsync(CategoryDto categoryDto)
+    public async Task<CategoryDto> CreateOneCategoryAsync(CategoryDto categoryDto)
     {
         var entity = _mapper.Map<Category>(categoryDto);
 
         _manager.Category.CreateOneCategory(entity);
         await _manager.SaveAsync();
 
-        return _mapper.Map<Category>(entity);
+        return _mapper.Map<CategoryDto>(entity);
     }
 
     public async Task DeleteOneCategoryAsync(int id, bool trackChanges)
     {
-        var entity = await GetOneCategoryByIdAsync(id, trackChanges);
+        var entity = await GetOneCategoryByIdAndCheckExists(id, trackChanges);
         
         _manager.Category.DeleteOneCategory(entity);
         await _manager.SaveAsync();
@@ -42,15 +43,25 @@ public class CategoryManager : ICategoryService
             .GetAllCategoriesAsync(trackChanges);
     }
 
-    public async Task<Category> GetOneCategoryByIdAsync(int id, bool trackChanges)
+    public async Task<CategoryDto> GetOneCategoryByIdAsync(int id, bool trackChanges)
     {
-        return await _manager
-             .Category
-             .GetOneCategoryByIdAsync(id, trackChanges);
+        var category = await GetOneCategoryByIdAndCheckExists(id, trackChanges);
+
+        return _mapper.Map<CategoryDto>(category);
     }
 
     public Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDto, bool trackChanges)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task<Category> GetOneCategoryByIdAndCheckExists(int id, bool trackChanges)
+    {
+        var entity = await _manager.Category.GetOneCategoryByIdAsync(id, trackChanges);
+
+        if (entity is null) throw new CategoryNotFoundException(id);
+
+        return entity;
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Entities.DTOs;
 using Entities.Exceptions;
+using Entities.Exceptions.Category;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 

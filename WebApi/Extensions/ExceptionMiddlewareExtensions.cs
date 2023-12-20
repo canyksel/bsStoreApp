@@ -1,5 +1,5 @@
 ﻿using Entities.ErrorModel;
-using Entities.Exceptions;
+using Entities.Exceptions.Base;
 using Microsoft.AspNetCore.Diagnostics;
 using Services.Contracts;
 

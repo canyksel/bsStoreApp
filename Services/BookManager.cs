@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.DTOs;
 using Entities.Exceptions;
+using Entities.Exceptions.Book;
 using Entities.LinkModels;
 using Entities.Models;
 using Entities.RequestFeatures;

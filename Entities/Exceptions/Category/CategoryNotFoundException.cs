@@ -1,4 +1,6 @@
-﻿namespace Entities.Exceptions;
+﻿using Entities.Exceptions.Base;
+
+namespace Entities.Exceptions.Category;
 
 public sealed class CategoryNotFoundException : NotFoundException
 {

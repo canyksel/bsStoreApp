@@ -1,4 +1,6 @@
-﻿namespace Entities.Exceptions;
+﻿using Entities.Exceptions.Base;
+
+namespace Entities.Exceptions.Book;
 
 
 public class PriceOutofRangeBadRequestException : BadRequestException
