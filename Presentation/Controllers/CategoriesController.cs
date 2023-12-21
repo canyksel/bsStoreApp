@@ -44,4 +44,20 @@ public class CategoriesController : ControllerBase
 
         return StatusCode(201, category);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateOneCategoryAsync([FromRoute(Name = "id")] int id, [FromBody] CategoryDtoForUpdate categoryDto)
+    {
+        await _manager.CategoryService.UpdateOneCategoryAsync(id, categoryDto, false);
+
+        return NoContent();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteOneBookAsync([FromRoute(Name ="id")], int id)
+    {
+        await _manager.CategoryService.DeleteOneCategoryAsync(id, false);
+
+        return NoContent();
+    }
 }

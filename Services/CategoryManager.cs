@@ -50,9 +50,14 @@ public class CategoryManager : ICategoryService
         return _mapper.Map<CategoryDto>(category);
     }
 
-    public Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDto, bool trackChanges)
+    public async Task UpdateOneCategoryAsync(int id, CategoryDtoForUpdate categoryDto, bool trackChanges)
     {
-        throw new NotImplementedException();
+        var entity = await GetOneCategoryByIdAndCheckExists(id, trackChanges);
+
+        entity = _mapper.Map<Category>(categoryDto);
+
+        _manager.Category.Update(entity);
+        await _manager.SaveAsync();
     }
 
     private async Task<Category> GetOneCategoryByIdAndCheckExists(int id, bool trackChanges)
